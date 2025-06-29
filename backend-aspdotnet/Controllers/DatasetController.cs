@@ -121,10 +121,21 @@ namespace backend_aspdotnet.Controllers
             if (!Guid.TryParse(userIdString, out Guid userId))
                 return Unauthorized("Invalid user ID format.");
 
-            var datasets = await _postgresDb.Datasets
-                .Where(d => d.UserId == userId)
-                .Select(d => new { d.Id, d.Name, d.CreatedAt, d.IsPublic })
-                .ToListAsync();
+
+             var datasets = await _postgresDb.Datasets
+              .Where(d => d.UserId == userId)
+                .Join(_postgresDb.Users,
+                    dataset => dataset.UserId,
+                    user => user.Id,
+                    (dataset, user) => new
+                    {
+                        dataset.Id,
+                        dataset.Name,
+                        user.Username,
+                        dataset.CreatedAt,
+                        dataset.IsPublic
+                    })
+                    .ToListAsync();
 
             return Ok(datasets);
         }
@@ -141,8 +152,17 @@ namespace backend_aspdotnet.Controllers
                 return Unauthorized("Invalid user ID format.");
             */
             var datasets = await _postgresDb.Datasets
-                .Where(d => d.IsPublic == true)
-                .Select(d => new { d.Id, d.Name, d.CreatedAt })
+            .Join(_postgresDb.Users,
+                dataset => dataset.UserId,
+                user => user.Id,
+                (dataset, user) => new
+                {
+                    dataset.Id,
+                    dataset.Name,
+                    user.Username,
+                    dataset.CreatedAt,
+                    dataset.IsPublic
+                })
                 .ToListAsync();
 
             return Ok(datasets);
