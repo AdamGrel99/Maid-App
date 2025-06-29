@@ -131,7 +131,6 @@ namespace backend_aspdotnet.Controllers
                     {
                         dataset.Id,
                         dataset.Name,
-                        user.Username,
                         dataset.CreatedAt,
                         dataset.IsPublic
                     })
@@ -160,8 +159,7 @@ namespace backend_aspdotnet.Controllers
                     dataset.Id,
                     dataset.Name,
                     user.Username,
-                    dataset.CreatedAt,
-                    dataset.IsPublic
+                    dataset.CreatedAt
                 })
                 .ToListAsync();
 
