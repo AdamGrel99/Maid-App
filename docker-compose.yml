@@ -12,7 +12,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDB__ConnectionString=mongodb://mongo:27017
       - MongoDB__DatabaseName=mydb
-      - PostgreSQL__ConnectionString=Host=postgres;Port=5432;Database=maid_app;Username=aspdotnet;Password=aspdotnet
+      - PostgreSQL__ConnectionString=Host=postgres;Port=5432;Database=maid_app;Username=postgres;Password=postgres
       - DJANGO_BASE_URL=http://django:8000
     depends_on:
       postgres:
@@ -43,8 +43,8 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_DB=maid_app
       - POSTGRES_SCHEMA=django_app
-      - POSTGRES_USER=django
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     command: sh -c "python manage.py migrate && python manage.py loadmanifests && python manage.py runserver 0.0.0.0:8000"
 
   celery-worker:
